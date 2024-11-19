@@ -16,6 +16,10 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   // Use inventory routes
   app.use('/api/inventory', inventoryRoutes);
   
+  // import the exported supplier route to integrate on server
+  const supplierRoutes = require('./routes/supplierRoutes');
+  // use the supplier route under '/api/suppliers'
+  app.use('/api/suppliers', supplierRoutes);
 
 // Test route
 app.get('/', (req, res) => {
