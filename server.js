@@ -11,6 +11,12 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.log(err));
 
+  // import the exported inventory route to integrate
+  const inventoryRoutes = require('./routes/inventoryRoutes');
+  // Use inventory routes
+  app.use('/api/inventory', inventoryRoutes);
+  
+
 // Test route
 app.get('/', (req, res) => {
   res.send('Inventory management backend is running');
