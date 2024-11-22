@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const inventorySchema = new mongoose.Schema({
     prodBrand: {
         type: String,
-        required: true,
+        required: true, 
     },
     prodCategory: {
         type: String,
@@ -13,30 +13,37 @@ const inventorySchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    quantity: {
-        type: Number,
-        required: true,
-    },
     weight: {
         type: String,
         required: true, // e.g., '500ml' or '1kg'
     },
+    quantity: {
+        type: Number,
+        required: true,
+    },
+    rate: {
+        type: Number, // rate pere unit
+        required: true, 
+    },
+    
     gstPercentage: {
         type: Number,
         required: true,
     },
-    supplierName: {
-        type: String,
+    supplier: {
+        type: mongoose.Schema.Types.ObjectId, // reference  to the supplier model
+        ref: 'Supplier',
         required: true,
     },
     purchaseDate: {
         type: Date,
-        default: Date.now,
+        default: Date.now, // By default set the current date, if purchased is done on the date while filling these details
     },
-    costPrice: {
-        type: Number,
-        required: true,
+    createdDate: {
+        type: Date,
+        default: Date.now, // Automatically set the created date
     },
+   
 });
 
 const Inventory = mongoose.model('Inventory', inventorySchema);
