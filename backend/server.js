@@ -1,10 +1,14 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const authRoutes = require('./routes/authRoutes'); // import authentication routes
+const cors = require('cors'); // import cors middleware to handle cross-origin requests)
 require('dotenv').config();
 
-// Middleware
+// Middleware for parsing JSON requests
 app.use(express.json());
+//Middleware to enable CORS for all routes
+app.use(cors({origin: 'http://localhost:5173/'}));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -20,6 +24,9 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   const supplierRoutes = require('./routes/supplierRoutes');
   // use the supplier route under '/api/suppliers'
   app.use('/api/suppliers', supplierRoutes);
+
+  // Use the authentication routes under `/api/auth`
+  app.use('/api/auth', authRoutes);
 
 // Test route
 app.get('/', (req, res) => {
