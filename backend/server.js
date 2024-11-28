@@ -2,13 +2,15 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes'); // import authentication routes
+const inventoryRoutes = require('./routes/inventoryRoutes');
+const supplierRoutes = require('./routes/supplierRoutes');
 const cors = require('cors'); // import cors middleware to handle cross-origin requests)
 require('dotenv').config();
 
 // Middleware for parsing JSON requests
 app.use(express.json());
 //Middleware to enable CORS for all routes
-app.use(cors({origin: 'http://localhost:5173/'}));
+app.use(cors({origin: '*',}));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
