@@ -1,4 +1,4 @@
-import {useState, useEffect, React} from 'react';
+import React, {useState, useEffect} from 'react';
 import { TextField, Button, Box, Typography } from '@mui/material';
 
 const Login = () => {
@@ -10,14 +10,28 @@ const Login = () => {
   // Function to handle login API call
   const handleLogin = async () => {
     try {
-      // Make a POST request to the login API
-      const response = await fetch('http://localhost:3000/api/auth/login', { email, password });
-      localStorage.setItem('token', response.data.token); // Save the JWT token in localStorage
-      alert('Login successful'); // Notify user of success
+      const response = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST', // Specify the HTTP method
+        headers: {
+          'Content-Type': 'application/json', // Set content type to JSON
+        },
+        body: JSON.stringify({ email, password }), // Send email and password as JSON
+      });
+  
+      if (!response.ok) {
+        // If response is not OK, throw an error
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Login failed');
+      }
+  
+      const data = await response.json(); // Parse the response JSON
+      localStorage.setItem('token', data.token); // Store token in localStorage
+      alert('Login successful');
     } catch (error) {
-      setError(error.response?.data?.message || 'An error occurred'); // Set error message
+      setError(error.message); // Set error message
     }
   };
+  
 
   return (
     <Box
