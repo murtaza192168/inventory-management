@@ -12,10 +12,13 @@ router.post('/signup', async(req, res) => {
 
         // check if the user with the same email Id already exists
         const existingUser = await User.findOne({email});
-        if(existingUser) return res.status(400).json({message: 'User already exists'})
+        if(existingUser){ return res.status(400).json({message: 'User already exists'}) }
 
-            // create a nw user and save it to database
-            const newUser = new User({businessName, email, password});
+        // Hash the password before saving
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+            // create a new user and save it to database
+            const newUser = new User({businessName, email, password: hashedPassword });
             await newUser.save(); 
             res.status(201).json({message: 'User registered successfully'}) // send success response
 
